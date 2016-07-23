@@ -43,10 +43,8 @@ class Operator(object):
     def divide(input_1, input_2):
       if input_2 == 0:
         return None
-      if input_1 % input_2 == 0:
-        return input_1 / input_2
-      else:
-        return None
+      print input_1, input_2, sympy.N(input_2, 5)
+      return sympy.Rational(input_1, input_2)
 
     def power(input_1, input_2):
       if input_2 > 100:
