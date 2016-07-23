@@ -25,7 +25,9 @@ class Generation():
       input_2_index = self.index - input_1_index
       for input_1 in Generation.generations[input_1_index].solutions:
         for input_2 in Generation.generations[input_2_index].solutions:
+          
           for operator in Operator.binary:
+            print input_1.number, input_2.number, operator
             result = Operator.apply_binary(operator, input_1.number, input_2.number)
             if (result is not None) and (result not in Solution.registry):
               new_solution = Solution(result, self.base, input_1.complexity + input_2.complexity, operator, input_1, input_2)
@@ -34,7 +36,7 @@ class Generation():
 
     for seed in seeds:
       Solution.register(seed)
-
+      print seed.number
       for operator in Operator.unary:
         result = Operator.apply_unary(operator, seed.number)
         if (result is not None) and (result not in Solution.registry):

@@ -2,12 +2,14 @@
 import sympy
 
 class Operator(object):
-  unary = ['sqrt', '!']
+  unary = ['sqrt', '!', '-']
   binary = ['+', '-', '*', '/', '^']
 
   @classmethod
   def apply_unary(cls, operator, input_1):
     def sqrt(input):
+      if input <= 0:
+        return None
       output = sympy.sqrt(input)
       if output % 1 == 0:
         return int(output)
@@ -20,9 +22,13 @@ class Operator(object):
       else:
         return None
 
+    def negate(input):
+      return (-input)
+
     return {
       'sqrt': sqrt,
-      '!': factorial
+      '!': factorial,
+      '-': negate
     }[operator](input_1)
 
   @classmethod
@@ -43,14 +49,15 @@ class Operator(object):
     def divide(input_1, input_2):
       if input_2 == 0:
         return None
-      print input_1, input_2, sympy.N(input_2, 5)
       return sympy.Rational(input_1, input_2)
 
     def power(input_1, input_2):
-      if input_2 > 100:
+      if input_2 > 30 or input_2 < -30:
+        return None
+      if input_1 <= 0:
         return None
       result = input_1 ** input_2
-      if result < 10 ** 30:
+      if result < 10 ** 30 and result > 0.1 ** 30:
         return result
       else:
         return None

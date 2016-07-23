@@ -5,6 +5,9 @@ class Solution():
     # 2: {
     #   3: [64]
     # }
+    6: {
+      2: [216]
+    }
   }
 
   def __init__(self, number, base, complexity, operator=None, input_1=None, input_2=None):
