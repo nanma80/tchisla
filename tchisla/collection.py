@@ -16,5 +16,7 @@ class Collection():
     sorted_keys = sorted(Solution.registry.keys())
     for key in sorted_keys:
       if number_limit is None or key <= number_limit:
-        solution = Solution.registry[key]
-        print solution.formatted()
+        # if key % 1 == 0:
+        if True:
+          solution = Solution.registry[key]
+          print solution.formatted()

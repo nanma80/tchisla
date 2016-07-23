@@ -1,6 +1,5 @@
-import math
-# from sympy import *
-
+# import math
+import sympy
 
 class Operator(object):
   unary = ['sqrt', '!']
@@ -9,15 +8,15 @@ class Operator(object):
   @classmethod
   def apply_unary(cls, operator, input_1):
     def sqrt(input):
-      output = math.sqrt(input)
+      output = sympy.sqrt(input)
       if output % 1 == 0:
         return int(output)
       else:
         return None
 
     def factorial(input):
-      if input < 30:
-        return math.factorial(input)
+      if input < 30 and input > 0 and input % 1 == 0:
+        return sympy.factorial(input)
       else:
         return None
 

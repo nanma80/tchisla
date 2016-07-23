@@ -2,9 +2,9 @@ class Solution():
   """Solution for number # base"""
   registry = {}
   known_improvements = {
-    2: {
-      3: [64]
-    }
+    # 2: {
+    #   3: [64]
+    # }
   }
 
   def __init__(self, number, base, complexity, operator=None, input_1=None, input_2=None):
