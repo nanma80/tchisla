@@ -4,6 +4,10 @@ class Solution():
   known_improvements = {
     2: {
       3: [64]
+    },
+    8: {
+      3: [1024],
+      5: [50]
     }
   }
 
