@@ -11,10 +11,16 @@ class Operator(object):
       if input <= 0:
         return None
       output = sympy.sqrt(input)
-      if output % 1 == 0:
-        return int(output)
-      else:
+      fraction_part_output = sympy.N(output % 1)
+
+      if fraction_part_output < 0.01 or fraction_part_output > 0.99:
         return None
+
+      return output
+      # if output % 1 == 0:
+      #   return int(output)
+      # else:
+      #   return None
 
     def factorial(input):
       if input < 30 and input > 0 and input % 1 == 0:
@@ -47,13 +53,25 @@ class Operator(object):
       return input_1 * input_2
 
     def divide(input_1, input_2):
+      # print input_1, input_2
       if input_2 == 0:
         return None
-      return sympy.Rational(input_1, input_2)
+      result = sympy.Rational(1) * input_1 / input_2
+      result_n = sympy.N(result)
+      if result_n < 1 and result_n > 1.0 - 0.1**5:
+        return None
+      if result_n > 1 and result_n < 1.0 + 0.1**5:
+        return None
+      return result
 
     def power(input_1, input_2):
       if input_2 > 30 or input_2 < -30:
         return None
+      fraction_part_input_2 = sympy.N(input_2 % 1)
+
+      if fraction_part_input_2 < 0.1 ** 6 or fraction_part_input_2 > 1 - 0.1 ** 6:
+        return None
+
       if input_1 <= 0:
         return None
       result = input_1 ** input_2

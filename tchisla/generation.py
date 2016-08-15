@@ -27,22 +27,29 @@ class Generation():
         for input_2 in Generation.generations[input_2_index].solutions:
           
           for operator in Operator.binary:
-            print input_1.number, input_2.number, operator
+            # print input_1.number, input_2.number, operator
             result = Operator.apply_binary(operator, input_1.number, input_2.number)
             if (result is not None) and (result not in Solution.registry):
-              new_solution = Solution(result, self.base, input_1.complexity + input_2.complexity, operator, input_1, input_2)
+              new_solution = Solution(result, self.base, input_1.complexity + input_2.complexity, operator, input_1, input_2, input_1.unary_operator_count + input_2.unary_operator_count)
               seeds.append(new_solution)
               Solution.register(new_solution)
 
     for seed in seeds:
       Solution.register(seed)
-      print seed.number
-      for operator in Operator.unary:
-        result = Operator.apply_unary(operator, seed.number)
-        if (result is not None) and (result not in Solution.registry):
-          new_solution = Solution(result, self.base, seed.complexity, operator, seed)
-          seeds.append(new_solution)
-          Solution.register(new_solution)
+      if seed.unary_operator_count <= 3:
+        for operator in Operator.unary:
+          # print seed.number, operator, 'start', seed.operator
+          # if seed.input_1:
+          #   print seed.input_1.number
+          # if seed.input_2:
+          #   print seed.input_2.number
+
+          result = Operator.apply_unary(operator, seed.number)
+          # print seed.number, operator, 'got result'
+          if (result is not None) and (result not in Solution.registry):
+            new_solution = Solution(result, self.base, seed.complexity, operator, seed, None, seed.unary_operator_count + 1)
+            seeds.append(new_solution)
+            Solution.register(new_solution)
 
     self.solutions = set(seeds)
     Generation.generations[self.index] = self

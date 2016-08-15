@@ -1,3 +1,5 @@
+import sympy
+
 class Solution():
   """Solution for number # base"""
   registry = {}
@@ -10,13 +12,14 @@ class Solution():
     }
   }
 
-  def __init__(self, number, base, complexity, operator=None, input_1=None, input_2=None):
+  def __init__(self, number, base, complexity, operator=None, input_1=None, input_2=None, unary_operator_count=0):
     self.number = number
     self.base = base
     self.input_1 = input_1
     self.input_2 = input_2
     self.operator = operator
     self.complexity = complexity
+    self.unary_operator_count = unary_operator_count
 
   def formatted(self):
     formula = ''
@@ -31,7 +34,7 @@ class Solution():
     else:
       formula = '{} {} {}'.format(self.input_1.number, self.operator, self.input_2.number)
 
-    return '{}: {}, {}'.format(self.number, self.complexity, formula)
+    return '{}: {}, {}, {}'.format(self.number, self.complexity, formula, sympy.N(self.number))
 
   @classmethod
   def register(cls, solution):
