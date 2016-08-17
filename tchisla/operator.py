@@ -44,7 +44,8 @@ class Operator(object):
 
     def subtract(input_1, input_2):
       result = input_1 - input_2
-      if result > 0:
+      result_n = sympy.N(result)
+      if result_n > 0:
         return result
       else:
         return None

@@ -13,8 +13,8 @@ class Collection():
       generation.build()
 
   def output(self, number_limit=100):
-    # sorted_keys = sorted(Solution.registry.keys())
-    sorted_keys = (Solution.registry.keys())
+    sorted_keys = sorted(Solution.registry.keys(), key=lambda x: sympy.N(x))
+    # sorted_keys = (Solution.registry.keys())
     for key in sorted_keys:
       if number_limit is None or key <= number_limit:
         # if key % 1 == 0:
