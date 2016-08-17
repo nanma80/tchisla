@@ -75,7 +75,8 @@ class Operator(object):
       if input_1 <= 0:
         return None
       result = input_1 ** input_2
-      if result < 10 ** 30 and result > 0.1 ** 30:
+      result_n = sympy.N(result)
+      if result_n < 10 ** 30 and result_n > 0.1 ** 30:
         return result
       else:
         return None
