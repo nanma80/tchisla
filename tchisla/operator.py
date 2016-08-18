@@ -8,7 +8,7 @@ class Operator(object):
   @classmethod
   def apply_unary(cls, operator, input_1):
     def sqrt(input):
-      if input <= 0:
+      if sympy.N(input) <= 0:
         return None
       output = sympy.sqrt(input)
       fraction_part_output = sympy.N(output % 1)
@@ -23,7 +23,8 @@ class Operator(object):
       #   return None
 
     def factorial(input):
-      if input < 30 and input > 0 and input % 1 == 0:
+      input_n = sympy.N(input)
+      if input_n < 30 and input_n > 0 and input_n % 1 == 0:
         return sympy.factorial(input)
       else:
         return None
@@ -66,14 +67,15 @@ class Operator(object):
       return result
 
     def power(input_1, input_2):
-      if input_2 > 30 or input_2 < -30:
+      input_2_n = sympy.N(input_2)
+      if input_2_n > 30 or input_2_n < -30:
         return None
       fraction_part_input_2 = sympy.N(input_2 % 1)
 
       if fraction_part_input_2 < 0.1 ** 6 or fraction_part_input_2 > 1 - 0.1 ** 6:
         return None
 
-      if input_1 <= 0:
+      if sympy.N(input_1) <= 0:
         return None
       result = input_1 ** input_2
       result_n = sympy.N(result)
