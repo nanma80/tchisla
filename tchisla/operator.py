@@ -68,11 +68,13 @@ class Operator(object):
 
     def power(input_1, input_2):
       input_2_n = sympy.N(input_2)
+
       if input_2_n > 30 or input_2_n < -30:
         return None
+
       fraction_part_input_2 = sympy.N(input_2 % 1)
 
-      if fraction_part_input_2 < 0.1 ** 6 or fraction_part_input_2 > 1 - 0.1 ** 6:
+      if (input_2 % 1 != 0) and (fraction_part_input_2 < 0.1 ** 6 or fraction_part_input_2 > 1 - 0.1 ** 6):
         return None
 
       if sympy.N(input_1) <= 0:
