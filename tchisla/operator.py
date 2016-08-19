@@ -13,7 +13,7 @@ class Operator(object):
       output = sympy.sqrt(input)
       fraction_part_output = sympy.N(output % 1)
 
-      if fraction_part_output < 0.01 or fraction_part_output > 0.99:
+      if (output % 1 != 0) and (fraction_part_output < 0.01 or fraction_part_output > 0.99):
         return None
 
       return output
@@ -24,7 +24,7 @@ class Operator(object):
 
     def factorial(input):
       input_n = sympy.N(input)
-      if input_n < 30 and input_n > 0 and input_n % 1 == 0:
+      if input_n < 30 and input_n > 0 and input % 1 == 0:
         return sympy.factorial(input)
       else:
         return None
