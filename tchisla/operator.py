@@ -1,16 +1,20 @@
 import sympy
 
 class Operator(object):
+  power_limit = 2
   unary = ['sqrt', '!', '-']
   binary = ['+', '-', '*', '/', '^']
 
   @classmethod
   def apply_unary(cls, operator, input_1):
     def sqrt(input):
-      if sympy.N(input) <= 0:
+      input_n = sympy.N(input)
+      if not input_n.is_real:
+        return None
+      if input_n <= 0:
         return None
       output = sympy.sqrt(input)
-      if (output ** 8).is_rational:
+      if (output ** Operator.power_limit).is_rational:
         return output
       else:
         return None
@@ -61,7 +65,7 @@ class Operator(object):
         return None
       result = sympy.Rational(1) * input_1 / input_2
       result_n = sympy.N(result)
-      if (result ** 8).is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
+      if (result ** Operator.power_limit).is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
         return result
       else:
         return None

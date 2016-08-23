@@ -2,7 +2,8 @@ import sys
 import tchisla as t
 
 def main():
-  filename, base, limit = sys.argv
+  filename, base, limit, power_limit = sys.argv
+  t.Operator.power_limit = int(power_limit)
   collection = t.Collection(int(base))
   collection.build(int(limit))
   collection.output(None)
