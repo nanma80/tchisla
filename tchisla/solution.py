@@ -20,10 +20,10 @@ class Solution():
     self.input_2 = input_2
     self.operator = operator
     self.complexity = complexity
-    if not self.number.is_real:
-      print 'Complex number:', self.number, self.input_1, self.input_2, self.operator, self.formatted()
-    if not sympy.N(self.number).is_real:
-      print 'Complex number after N:', self.number, self.input_1, self.input_2, self.operator, self.formatted()
+    # if not self.number.is_real:
+    #   print 'Complex number:', self.number, self.input_1, self.input_2, self.operator, self.formatted()
+    # if not sympy.N(self.number).is_real:
+    #   print 'Complex number after N:', self.number, self.input_1, self.input_2, self.operator, self.formatted()
 
 
   def formatted(self):
