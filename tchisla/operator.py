@@ -10,7 +10,7 @@ class Operator(object):
       if sympy.N(input) <= 0:
         return None
       output = sympy.sqrt(input)
-      if output.is_rational:
+      if (output ** 8).is_rational:
         return output
       else:
         return None
@@ -61,7 +61,7 @@ class Operator(object):
         return None
       result = sympy.Rational(1) * input_1 / input_2
       result_n = sympy.N(result)
-      if result.is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
+      if (result ** 8).is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
         return result
       else:
         return None
