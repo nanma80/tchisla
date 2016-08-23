@@ -1,7 +1,7 @@
+import sympy
 import tchisla as t
 
-collection = t.Collection(1)
-collection.build(10)
-collection.output(None)
-print "Complexity is:"
-print t.Solution.registry[2016].complexity
+collection = t.Collection(6)
+collection.build(5)
+for solution in collection.iter_solution():
+  print sympy.Rational(357)/solution.number
