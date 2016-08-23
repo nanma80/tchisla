@@ -4,11 +4,15 @@ class Solution():
   """Solution for number # base"""
   registry = {}
   known_improvements = {
-    # 2: {
-    #   3: [64]
-    # }
+    2: {
+      3: [64]
+    },
     6: {
       2: [216]
+    },
+    8: {
+      3: [1024],
+      5: [50]
     }
   }
 
