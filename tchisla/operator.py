@@ -1,29 +1,33 @@
-import math
-# from sympy import *
-
+import sympy
 
 class Operator(object):
-  unary = ['sqrt', '!']
+  unary = ['sqrt', '!', '-']
   binary = ['+', '-', '*', '/', '^']
 
   @classmethod
   def apply_unary(cls, operator, input_1):
     def sqrt(input):
-      output = math.sqrt(input)
-      if output % 1 == 0:
-        return int(output)
+      if sympy.N(input) <= 0:
+        return None
+      output = sympy.sqrt(input)
+      if output.is_rational:
+        return output
       else:
         return None
 
     def factorial(input):
-      if input < 30:
-        return math.factorial(input)
+      if sympy.N(input) < 30 and sympy.N(input) > 0 and input.is_integer:
+        return sympy.factorial(input)
       else:
         return None
 
+    def negate(input):
+      return (-input)
+
     return {
       'sqrt': sqrt,
-      '!': factorial
+      '!': factorial,
+      '-': negate
     }[operator](input_1)
 
   @classmethod
@@ -33,7 +37,7 @@ class Operator(object):
 
     def subtract(input_1, input_2):
       result = input_1 - input_2
-      if result > 0:
+      if sympy.N(result) > 0:
         return result
       else:
         return None
@@ -44,16 +48,26 @@ class Operator(object):
     def divide(input_1, input_2):
       if input_2 == 0:
         return None
-      if input_1 % input_2 == 0:
-        return input_1 / input_2
+      result = sympy.Rational(1) * input_1 / input_2
+      # result_n = sympy.N(result)
+      if result.is_rational:
+        return result
       else:
         return None
 
     def power(input_1, input_2):
-      if input_2 > 100:
+      if sympy.N(input_1) <= 0:
         return None
+      input_2_n = sympy.N(input_2)
+      if input_2_n > 30 or input_2_n < -30:
+        return None
+      if not input_2.is_integer:
+        return None
+
       result = input_1 ** input_2
-      if result < 10 ** 30:
+      result_n = sympy.N(result)
+
+      if result_n < 10 ** 30 and result_n > 0.1 ** 30:
         return result
       else:
         return None

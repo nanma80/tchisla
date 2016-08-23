@@ -11,7 +11,7 @@ class Generation():
     self.solutions = set()
 
   def build(self):
-    single_number = (10 ** self.index - 1) / 9 * self.base
+    single_number = sympy.Rational((10 ** self.index - 1) / 9 * self.base)
     first_solution = Solution(single_number, self.base, self.index)
 
     seeds = [first_solution]
