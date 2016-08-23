@@ -1,3 +1,4 @@
+import sympy
 from generation import *
 
 
@@ -13,11 +14,11 @@ class Collection():
       generation.build()
 
   def output(self, number_limit=100):
+    for solution in self.iter_solution(number_limit):
+      print solution.formatted()
+
+  def iter_solution(self, number_limit=100):
     sorted_keys = sorted(Solution.registry.keys(), key=lambda x: sympy.N(x))
-    # sorted_keys = (Solution.registry.keys())
     for key in sorted_keys:
       if number_limit is None or key <= number_limit:
-        # if key % 1 == 0:
-        if True:
-          solution = Solution.registry[key]
-          print solution.formatted()
+        yield Solution.registry[key]
