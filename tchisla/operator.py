@@ -33,9 +33,13 @@ class Operator(object):
   @classmethod
   def apply_binary(cls, operator, input_1, input_2):
     def add(input_1, input_2):
+      if sympy.N(input_2) <= 0:
+        return None
       return input_1 + input_2
 
     def subtract(input_1, input_2):
+      if sympy.N(input_2) <= 0:
+        return None
       result = input_1 - input_2
       if sympy.N(result) > 0:
         return result
@@ -43,14 +47,21 @@ class Operator(object):
         return None
 
     def times(input_1, input_2):
-      return input_1 * input_2
+      if sympy.N(input_2) <= 0:
+        return None
+      result = input_1 * input_2
+      result_n = sympy.N(result)
+      if result_n < 10 ** 30 and result_n > 0.1 ** 10:
+        return result
+      else:
+        return None
 
     def divide(input_1, input_2):
-      if input_2 == 0:
+      if input_2 <= 0:
         return None
       result = sympy.Rational(1) * input_1 / input_2
-      # result_n = sympy.N(result)
-      if result.is_rational:
+      result_n = sympy.N(result)
+      if result.is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
         return result
       else:
         return None
@@ -67,7 +78,7 @@ class Operator(object):
       result = input_1 ** input_2
       result_n = sympy.N(result)
 
-      if result_n < 10 ** 30 and result_n > 0.1 ** 30:
+      if result_n < 10 ** 30 and result_n > 0.1 ** 10:
         return result
       else:
         return None
