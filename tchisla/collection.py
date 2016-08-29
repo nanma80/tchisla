@@ -13,11 +13,11 @@ class Collection():
       generation = Generation(generation_index, self.base)
       generation.build()
 
-  def output(self, number_limit=100):
+  def output(self, number_limit=None):
     for solution in self.iter_solution(number_limit):
       print solution.formatted()
 
-  def iter_solution(self, number_limit=100):
+  def iter_solution(self, number_limit=None):
     sorted_keys = sorted(Solution.registry.keys(), key=lambda x: sympy.N(x))
     for key in sorted_keys:
       if number_limit is None or key <= number_limit:
