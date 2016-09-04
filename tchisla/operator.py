@@ -53,7 +53,7 @@ class Operator(object):
       if input_2 > 100:
         return None
       result = input_1 ** input_2
-      if result < 10 ** 30:
+      if result < 10 ** 41:
         return result
       else:
         return None
