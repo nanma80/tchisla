@@ -51,7 +51,7 @@ class Operator(object):
         return None
       result = input_1 * input_2
       result_n = sympy.N(result)
-      if result_n < 10 ** 30 and result_n > 0.1 ** 10:
+      if result_n < 10 ** 41 and result_n > 0.1 ** 16:
         return result
       else:
         return None
@@ -61,7 +61,7 @@ class Operator(object):
         return None
       result = sympy.Rational(1) * input_1 / input_2
       result_n = sympy.N(result)
-      if result.is_rational and result_n < 10 ** 30 and result_n > 0.1 ** 10:
+      if result.is_rational and result_n < 10 ** 41 and result_n > 0.1 ** 16:
         return result
       else:
         return None
@@ -78,7 +78,7 @@ class Operator(object):
       result = input_1 ** input_2
       result_n = sympy.N(result)
 
-      if result_n < 10 ** 30 and result_n > 0.1 ** 10:
+      if result_n < 10 ** 41 and result_n > 0.1 ** 16:
         return result
       else:
         return None
