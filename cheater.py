@@ -1,51 +1,84 @@
+#!/usr/bin/env python
+
+import sys
 import requests
 import json
 
-target = 6400
-digits_count = 6
-digit = 7
+filename, target_string, digit_string, digits_count_string = sys.argv
 
-cache_limit = 1000000
+final_target = int(target_string)
+final_digit = int(digit_string)
+final_digits_count = int(digits_count_string)
 
-registry = {}
+cache_limit = 1000000000
 
-resp = requests.get("http://www.euclidea.xyz/api/v1/game/numbers/solutions/records?&query={gte:1,lte:" + repr(cache_limit) + "}")
-all_records = json.loads(resp.content)['records']
-print "loaded {0} records from API".format(len(all_records))
+def all_records():
+  registry = {}
+  for digits in xrange(1, 10):
+    registry[digits] = {}
+  resp = requests.get("http://www.euclidea.xyz/api/v1/game/numbers/solutions/records?&query={gte:1,lte:" + repr(cache_limit) + "}")
+  all_records = json.loads(resp.content)['records']
+  print "loaded {0} records from API".format(len(all_records))
 
-for record in all_records:
-  if int(record['digits']) == digit:
-    registry[int(record['target'])] = int(record['digits_count'])
+  for record in all_records:
+    digits = int(record['digits'])
+    target = int(record['target'])
+    digits_count = int(record['digits_count'])
+    if digits == final_digit:
+      registry[target] = digits_count
+  return registry
 
-for plus_1 in xrange(1, cache_limit):
-  if plus_1 in registry:
-    if registry[plus_1] >= digits_count:
+def check_optimality(target, digits_count, registry):
+  for (operand_1, operand_1_count) in registry.iteritems():
+    if operand_1_count >= digits_count:
       continue
-    plus_2 = abs(target - plus_1)
+
+    # operand_1 + or - plus_2 == target
+    plus_2 = abs(target - operand_1)
+    operator = '+' if (target > operand_1) else '-'
     if plus_2 in registry:
-      if registry[plus_1] + registry[plus_2] <= digits_count:
-        print "Found solution (plus) with ", plus_1, registry[plus_1], plus_2, registry[plus_2]
-        exit()
+      if operand_1_count + registry[plus_2] <= digits_count:
+        print "{} ({}) = {} ({}) {} {} ({})".format(
+          target,
+          digits_count,
+          operand_1, operand_1_count,
+          operator,
+          plus_2, registry[plus_2]
+        )
+        check_optimality(operand_1, operand_1_count, registry)
+        check_optimality(plus_2, registry[plus_2], registry)
+        return
 
-for times_1 in xrange(1, target):
-  if times_1 in registry:
-    if registry[times_1] >= digits_count:
-      continue
-    if target % times_1 != 0:
-      continue
-    times_2 = target / times_1
-    if times_2 in registry:
-      if registry[times_1] + registry[times_2] <= digits_count:
-        print "Found solution (times) with ", times_1, registry[times_1], times_2, registry[times_2]
-        exit()
+    # operand_1 * times_2 == target
+    if target % operand_1 == 0:
+      times_2 = target / operand_1
+      if times_2 in registry:
+        if operand_1_count + registry[times_2] <= digits_count:
+          print "{} ({}) = {} ({}) * {} ({})".format(
+            target,
+            digits_count,
+            operand_1, operand_1_count,
+            times_2, registry[times_2]
+          )
+          check_optimality(operand_1, operand_1_count, registry)
+          check_optimality(times_2, registry[times_2], registry)
 
-for denominator in xrange(1, cache_limit / target):
-  if denominator in registry:
-    if registry[denominator] >= digits_count:
-      continue
-    nominator = denominator * target
-    if nominator <= cache_limit:
-      if nominator in registry:
-        if registry[denominator] + registry[nominator] <= digits_count:
-          print "Found solution (division) with ", nominator, registry[nominator], denominator, registry[denominator]
-          exit()
+          return
+
+    # numerator / operand_1 == target
+    numerator = operand_1 * target
+    if numerator <= cache_limit:
+      if numerator in registry:
+        if operand_1_count + registry[numerator] <= digits_count:
+            print "{} ({}) = {} ({}) / {} ({})".format(
+              target, digits_count,
+              numerator, registry[numerator],
+              operand_1, operand_1_count
+            )
+            check_optimality(numerator, registry[numerator], registry)
+            check_optimality(operand_1, operand_1_count, registry)
+            return
+
+records = all_records()
+print "#{}".format(final_digit)
+check_optimality(final_target, final_digits_count, records)
