@@ -36,7 +36,7 @@ def check_optimality(target, digits, registry):
     operator = '+' if (target > operand_1) else '-'
     if plus_2 in registry:
       if operand_1_count + registry[plus_2] <= digits_count:
-        print "\aFound better solution for {}#{} ({}): {} ({}) {} {} ({})".format(
+        print "Found better solution for {}#{} ({}): {} ({}) {} {} ({})".format(
           target,
           digits,
           digits_count,
@@ -51,7 +51,7 @@ def check_optimality(target, digits, registry):
       times_2 = target / operand_1
       if times_2 in registry:
         if operand_1_count + registry[times_2] <= digits_count:
-          print "\aFound better solution for {}#{} ({}): {} ({}) * {} ({})".format(
+          print "Found better solution for {}#{} ({}): {} ({}) * {} ({})".format(
             target,
             digits,
             digits_count,
@@ -65,7 +65,7 @@ def check_optimality(target, digits, registry):
     if numerator <= cache_limit:
       if numerator in registry:
         if operand_1_count + registry[numerator] <= digits_count:
-            print "\aFound better solution for {}#{} ({}): {} ({}) / {} ({})".format(
+            print "Found better solution for {}#{} ({}): {} ({}) / {} ({})".format(
               target, digits, digits_count,
               numerator, registry[numerator],
               operand_1, operand_1_count
