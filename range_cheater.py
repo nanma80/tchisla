@@ -4,18 +4,11 @@ import sys
 import requests
 import json
 
-if len(sys.argv) == 4:
-  filename, target_string, digit_string, digits_count_string = sys.argv
+filename, target_lower_bound_string, target_upper_bound_string, digit_string = sys.argv
 
-  final_target = int(target_string)
-  final_digit = int(digit_string)
-  final_digits_count = int(digits_count_string)
-elif len(sys.argv) == 3:
-  filename, target_string, digit_string = sys.argv
-
-  final_target = int(target_string)
-  final_digit = int(digit_string)
-  final_digits_count = None
+target_lower_bound = int(target_lower_bound_string)
+target_upper_bound = int(target_upper_bound_string)
+final_digit = int(digit_string)
 
 cache_limit = 1000000000
 
@@ -89,7 +82,9 @@ def check_optimality(target, digits_count, registry):
             return
 
 records = all_records()
-if final_digits_count is None:
+print "#{}".format(final_digit)
+for final_target in xrange(target_lower_bound, target_upper_bound + 1):
   final_digits_count = records[final_target]
-print "{}#{} ({}):".format(final_target, final_digit, final_digits_count)
-check_optimality(final_target, final_digits_count, records)
+  print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
+  check_optimality(final_target, final_digits_count, records)
+  print "\n"
