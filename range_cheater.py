@@ -14,5 +14,5 @@ print "#{}".format(final_digit)
 for final_target in xrange(target_lower_bound, target_upper_bound + 1):
   final_digits_count = records[final_target]
   print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
-  t.cheater.check_optimality(final_target, final_digits_count, records)
+  t.cheater.solve(final_target, final_digits_count, records)
   print

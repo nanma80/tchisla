@@ -15,4 +15,4 @@ for digits in xrange(1, 10):
     if target not in sub_records:
       print "No record for {}#{}".format(target, digits)
     else:
-      t.cheater.check_optimality(target, sub_records[target] - 1, sub_records)
+      t.cheater.solve(target, sub_records[target] - 1, sub_records)
