@@ -3,6 +3,15 @@ import json
 
 DEFAULT_CACHE_LIMIT = 1000000000
 
+
+def inject_repeated_digits(registry):
+  for digits in registry:
+    for repeat_count in xrange(1, 10):
+      number = digits * (10 ** repeat_count - 1) / 9
+      if number not in registry[digits]:
+        registry[digits][number] = repeat_count
+
+
 def get_all(cache_limit=DEFAULT_CACHE_LIMIT):
   registry = {}
   for digits in xrange(1, 10):
@@ -18,6 +27,8 @@ def get_all(cache_limit=DEFAULT_CACHE_LIMIT):
     digits_count = int(record['digits_count'])
     if digits >= 1 and digits <= 9:
       registry[digits][target] = digits_count
+
+  inject_repeated_digits(registry)
   return registry
 
 
