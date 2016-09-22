@@ -6,7 +6,7 @@ for n in xrange(3, 20):
   reverse_factorial[math.factorial(n)] = n
 
 
-def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
+def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppress_failure=False):
   if target > 1:
     # sqrt(square) == target
     square = target ** 2
@@ -89,5 +89,6 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
   if len(str(target)) == digits_count:
     return True
 
-  print "{} ({}) = ?".format(target, digits_count)
+  if not suppress_failure:
+    print "{} ({}) = ?".format(target, digits_count)
   return False
