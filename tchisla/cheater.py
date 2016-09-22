@@ -16,8 +16,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
         digits_count,
         square
       )
-      solve(square, registry[square], registry)
-      return
+      return solve(square, registry[square], registry)
 
   # rev_fac! == target
   if target in reverse_factorial:
@@ -28,8 +27,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
         digits_count,
         rev_fac
       )
-      solve(rev_fac, registry[rev_fac], registry)
-      return
+      return solve(rev_fac, registry[rev_fac], registry)
 
   for (operand_1, operand_1_count) in registry.iteritems():
     if operand_1_count >= digits_count:
@@ -38,6 +36,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
     # operand_1 ** power == target
     if operand_1 > 1:
       power = int(math.log(target, operand_1) + 0.5)
+
       if operand_1 ** power == target:
         if power in registry and operand_1_count + registry[power] <= digits_count:
           print "{} ({}) = {} ^ {}".format(
@@ -46,9 +45,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
             operand_1,
             power,
           )
-          solve(operand_1, operand_1_count, registry)
-          solve(power, registry[power], registry)
-          return
+          return solve(operand_1, operand_1_count, registry) and solve(power, registry[power], registry)
 
     # operand_1 + or - plus_2 == target
     plus_2 = abs(target - operand_1)
@@ -62,9 +59,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
           operator,
           plus_2
         )
-        solve(operand_1, operand_1_count, registry)
-        solve(plus_2, registry[plus_2], registry)
-        return
+        return solve(operand_1, operand_1_count, registry) and solve(plus_2, registry[plus_2], registry)
 
     # operand_1 * times_2 == target
     if target % operand_1 == 0:
@@ -77,10 +72,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
             operand_1,
             times_2
           )
-          solve(operand_1, operand_1_count, registry)
-          solve(times_2, registry[times_2], registry)
-
-          return
+          return solve(operand_1, operand_1_count, registry) and solve(times_2, registry[times_2], registry)
 
     # numerator / operand_1 == target
     numerator = operand_1 * target
@@ -92,7 +84,10 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT):
               numerator,
               operand_1,
             )
-            solve(numerator, registry[numerator], registry)
-            solve(operand_1, operand_1_count, registry)
-            return
-  
+            return solve(numerator, registry[numerator], registry) and solve(operand_1, operand_1_count, registry)
+
+  if len(str(target)) == digits_count:
+    return True
+
+  print "{} ({}) = ?".format(target, digits_count)
+  return False
