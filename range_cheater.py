@@ -3,16 +3,32 @@
 import sys
 import tchisla as t
 
-filename, target_lower_bound_string, target_upper_bound_string, digit_string = sys.argv
+
+if len(sys.argv) == 2:
+  filename, target_lower_bound_string = sys.argv
+  target_upper_bound_string = target_lower_bound_string
+  digit_lower_bound_string = '1'
+  digit_upper_bound_string = '9'
+elif len(sys.argv) == 3:
+  filename, target_lower_bound_string, target_upper_bound_string = sys.argv
+  digit_lower_bound_string = '1'
+  digit_upper_bound_string = '9'
+elif len(sys.argv) == 4:
+  filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string = sys.argv
+  digit_upper_bound_string = digit_lower_bound_string
+elif len(sys.argv) == 5:
+  filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string, digit_upper_bound_string = sys.argv
 
 target_lower_bound = int(target_lower_bound_string)
 target_upper_bound = int(target_upper_bound_string)
-final_digit = int(digit_string)
+final_digit_lower_bound = int(digit_lower_bound_string)
+final_digit_upper_bound = int(digit_upper_bound_string)
 
-records = t.records.get(final_digit)
-print "#{}".format(final_digit)
-for final_target in xrange(target_lower_bound, target_upper_bound + 1):
-  final_digits_count = records[final_target]
-  print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
-  t.cheater.solve(final_target, final_digits_count, records)
-  print
+all_records = t.records.get_all()
+for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
+  records = all_records[final_digit]
+  for final_target in xrange(target_lower_bound, target_upper_bound + 1):
+    final_digits_count = records[final_target]
+    print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
+    t.cheater.solve(final_target, final_digits_count, records)
+    print
