@@ -30,6 +30,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
       return solve(rev_fac, registry[rev_fac], registry)
 
   for (operand_1, operand_1_count) in registry.iteritems():
+    if operand_1 == 'digits':
+      continue
+
     if operand_1_count >= digits_count:
       continue
 
@@ -45,7 +48,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
             operand_1,
             power,
           )
-          return solve(operand_1, operand_1_count, registry) and solve(power, registry[power], registry)
+          operand_1_solved = solve(operand_1, operand_1_count, registry)
+          other_solved = solve(power, registry[power], registry)
+          return operand_1_solved and other_solved
 
     # operand_1 + or - plus_2 == target
     plus_2 = abs(target - operand_1)
@@ -59,7 +64,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
           operator,
           plus_2
         )
-        return solve(operand_1, operand_1_count, registry) and solve(plus_2, registry[plus_2], registry)
+        operand_1_solved = solve(operand_1, operand_1_count, registry)
+        other_solved = solve(plus_2, registry[plus_2], registry)
+        return operand_1_solved and other_solved
 
     # operand_1 * times_2 == target
     if target % operand_1 == 0:
@@ -72,7 +79,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
             operand_1,
             times_2
           )
-          return solve(operand_1, operand_1_count, registry) and solve(times_2, registry[times_2], registry)
+          operand_1_solved = solve(operand_1, operand_1_count, registry)
+          other_solved = solve(times_2, registry[times_2], registry)
+          return operand_1_solved and other_solved
 
     # numerator / operand_1 == target
     numerator = operand_1 * target
@@ -84,9 +93,11 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
               numerator,
               operand_1,
             )
-            return solve(numerator, registry[numerator], registry) and solve(operand_1, operand_1_count, registry)
+            other_solved = solve(numerator, registry[numerator], registry)
+            operand_1_solved = solve(operand_1, operand_1_count, registry)
+            return other_solved and operand_1_solved
 
-  if len(str(target)) == digits_count:
+  if str(target) == str(registry['digits']) * digits_count:
     return True
 
   if not suppress_failure:

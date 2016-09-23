@@ -15,7 +15,7 @@ def inject_repeated_digits(registry):
 def get_all(cache_limit=DEFAULT_CACHE_LIMIT):
   registry = {}
   for digits in xrange(1, 10):
-    registry[digits] = {}
+    registry[digits] = {'digits': digits}
   print "Loading records from API ..."
   resp = requests.get("http://www.euclidea.xyz/api/v1/game/numbers/solutions/records?&query={gte:1,lte:" + repr(cache_limit) + "}")
   all_records = json.loads(resp.content)['records']
