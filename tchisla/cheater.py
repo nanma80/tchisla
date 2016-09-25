@@ -5,18 +5,10 @@ reverse_factorial = {}
 for n in xrange(3, 20):
   reverse_factorial[math.factorial(n)] = n
 
+unsolved_problems = {}
 
 def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppress_failure=False):
-  if target > 1:
-    # sqrt(square) == target
-    square = target ** 2
-    if square in registry and registry[square] <= digits_count:
-      print "{} ({}) = sqrt({})".format(
-        target,
-        digits_count,
-        square
-      )
-      return solve(square, registry[square], registry)
+  digits = registry['digits']
 
   # rev_fac! == target
   if target in reverse_factorial:
@@ -97,9 +89,21 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
             operand_1_solved = solve(operand_1, operand_1_count, registry)
             return other_solved and operand_1_solved
 
-  if str(target) == str(registry['digits']) * digits_count:
+  if target > 1:
+    # sqrt(square) == target
+    square = target ** 2
+    if square in registry and registry[square] <= digits_count:
+      print "{} ({}) = sqrt({})".format(
+        target,
+        digits_count,
+        square
+      )
+      return solve(square, registry[square], registry)
+
+  if str(target) == str(digits) * digits_count:
     return True
 
+  unsolved_problems[(target, digits)] = digits_count
   if not suppress_failure:
     print "{} ({}) = ?".format(target, digits_count)
   return False
