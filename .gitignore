@@ -89,5 +89,6 @@ ENV/
 .ropeproject
 
 results/
+tmp/
 
 .DS_Store
