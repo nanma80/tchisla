@@ -32,3 +32,8 @@ for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
     print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
     t.cheater.solve(final_target, final_digits_count, records)
     print
+
+sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))
+
+for unsolved_problem in sorted_unsolved_problems:
+  print "Unsolved: {}#{} = {}".format(unsolved_problem[0], unsolved_problem[1], t.cheater.unsolved_problems[unsolved_problem])
