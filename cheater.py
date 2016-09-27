@@ -18,7 +18,11 @@ elif len(sys.argv) == 3:
 
 records = t.records.get(final_digit)
 
-if final_digits_count is None:
-  final_digits_count = records[final_target]
-print "{}#{} ({}):".format(final_target, final_digit, final_digits_count)
-t.cheater.solve(final_target, final_digits_count, records)
+if final_target not in records:
+  print "No record for {}#{}".format(final_target, final_digit)
+else:
+  if final_digits_count is None:
+    final_digits_count = records[final_target]
+
+  print "{}#{} ({}):".format(final_target, final_digit, final_digits_count)
+  t.cheater.solve(final_target, final_digits_count, records)

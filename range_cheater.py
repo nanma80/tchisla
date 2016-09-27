@@ -28,9 +28,12 @@ all_records = t.records.get_all()
 for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   records = all_records[final_digit]
   for final_target in xrange(target_lower_bound, target_upper_bound + 1):
-    final_digits_count = records[final_target]
-    print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
-    t.cheater.solve(final_target, final_digits_count, records)
+    if final_target not in records:
+      print "No record for {}#{}".format(final_target, final_digit)
+    else:
+      final_digits_count = records[final_target]
+      print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
+      t.cheater.solve(final_target, final_digits_count, records)
     print
 
 sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))

@@ -3,14 +3,21 @@
 import sys
 import tchisla as t
 
-filename, check_limit_string = sys.argv
-check_limit = int(check_limit_string)
+if len(sys.argv) == 2:
+  filename, check_limit_string = sys.argv
+  check_upper_limit = int(check_limit_string)
+  check_lower_limit = 1
+if len(sys.argv) == 3:
+  filename, check_lower_limit_string, check_limit_string = sys.argv
+  check_upper_limit = int(check_limit_string)
+  check_lower_limit = int(check_lower_limit_string)
+
 
 all_records = t.records.get_all()
 for digits in xrange(1, 10):
   print "Processing #{}".format(digits)
 
-  for target in xrange(1, check_limit + 1):
+  for target in xrange(check_lower_limit, check_upper_limit + 1):
     sub_records = all_records[digits]
     if target not in sub_records:
       print "No record for {}#{}".format(target, digits)
