@@ -4,11 +4,10 @@ import json
 
 DEFAULT_CACHE_LIMIT = 1000000000
 
+tmp_dir = 'tmp'
+cache_path = tmp_dir + "/records.json"
 
 def load(cache_limit=DEFAULT_CACHE_LIMIT):
-  tmp_dir = 'tmp'
-  cache_path = tmp_dir + "/records.json"
-
   if not os.path.exists(tmp_dir):
     os.makedirs(tmp_dir)
 
