@@ -18,7 +18,7 @@ elif len(sys.argv) == 3:
 
 records = t.records.get(final_digit)
 
-if final_target not in records:
+if final_target not in records and final_digits_count is None:
   print "No record for {}#{}".format(final_target, final_digit)
 else:
   if final_digits_count is None:
