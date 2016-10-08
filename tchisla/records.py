@@ -7,6 +7,22 @@ DEFAULT_CACHE_LIMIT = 1000000000
 tmp_dir = 'tmp'
 cache_path = tmp_dir + "/records.json"
 
+def get_gs_records():
+  registry = {}
+  for digits in xrange(1, 10):
+    registry[digits] = {'digits': digits}
+
+  gs_records_filename = 'gs_records.txt'
+
+  with open(gs_records_filename, 'r') as f:
+    for line in f:
+      content = line.strip("\n")
+      problem, digits_count = content.split(" ")
+      target, digits = problem.split("#")
+      target, digits, digits_count = int(target), int(digits), int(digits_count)
+      registry[digits][target] = digits_count
+  return registry
+
 def load(cache_limit=DEFAULT_CACHE_LIMIT):
   if not os.path.exists(tmp_dir):
     os.makedirs(tmp_dir)
@@ -37,19 +53,24 @@ def inject_repeated_digits(registry):
         registry[digits][number] = repeat_count
 
 
-def get_all(cache_limit=DEFAULT_CACHE_LIMIT):
+def get_all(cache_limit=DEFAULT_CACHE_LIMIT, merge_gs_records=True):
   registry = {}
   for digits in xrange(1, 10):
     registry[digits] = {'digits': digits}
 
   all_records = load(cache_limit)
+  gs_records = get_gs_records()
 
   for record in all_records:
     digits = int(record['digits'])
     target = int(record['target'])
     digits_count = int(record['digits_count'])
+
     if digits >= 1 and digits <= 9:
-      registry[digits][target] = digits_count
+      if merge_gs_records and target in gs_records[digits]:
+        registry[digits][target] = min(digits_count, gs_records[digits][target])
+      else:
+        registry[digits][target] = digits_count
 
   inject_repeated_digits(registry)
   return registry
