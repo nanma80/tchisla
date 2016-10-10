@@ -72,6 +72,12 @@ def get_all(cache_limit=DEFAULT_CACHE_LIMIT, merge_gs_records=True):
       else:
         registry[digits][target] = digits_count
 
+  if merge_gs_records:
+    for digits in xrange(1, 10):
+      for target in gs_records[digits]:
+        if target not in registry[digits]:
+          registry[digits][target] = gs_records[digits][target]
+
   inject_repeated_digits(registry)
   return registry
 
