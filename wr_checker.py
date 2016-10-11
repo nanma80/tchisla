@@ -13,7 +13,7 @@ if len(sys.argv) == 3:
   check_lower_limit = int(check_lower_limit_string)
 
 
-all_records = t.records.get_all()
+all_records = t.records.get_all(merge_gs_records=False)
 for digits in xrange(1, 10):
   print "Processing #{}".format(digits)
 
