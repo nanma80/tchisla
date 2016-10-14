@@ -19,7 +19,10 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
         digits_count,
         rev_fac
       )
-      return solve(rev_fac, registry[rev_fac], registry)
+      inner = solve(rev_fac, registry[rev_fac], registry)
+      if inner is None:
+        return None
+      return u"({}!)".format(inner)
 
   for (operand_1, operand_1_count) in registry.iteritems():
     if operand_1 == 'digits':
@@ -42,7 +45,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
           )
           operand_1_solved = solve(operand_1, operand_1_count, registry)
           other_solved = solve(power, registry[power], registry)
-          return operand_1_solved and other_solved
+          if operand_1_solved is None or other_solved is None:
+            return None
+          return u"({} ^ {})".format(operand_1_solved, other_solved)
 
     # operand_1 + or - plus_2 == target
     plus_2 = abs(target - operand_1)
@@ -58,7 +63,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
         )
         operand_1_solved = solve(operand_1, operand_1_count, registry)
         other_solved = solve(plus_2, registry[plus_2], registry)
-        return operand_1_solved and other_solved
+        if operand_1_solved is None or other_solved is None:
+          return None
+        return u"({} {} {})".format(operand_1_solved, operator, other_solved)
 
     # operand_1 * times_2 == target
     if target % operand_1 == 0:
@@ -73,7 +80,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
           )
           operand_1_solved = solve(operand_1, operand_1_count, registry)
           other_solved = solve(times_2, registry[times_2], registry)
-          return operand_1_solved and other_solved
+          if operand_1_solved is None or other_solved is None:
+            return None
+          return u"({} * {})".format(operand_1_solved, other_solved)
 
     # numerator / operand_1 == target
     numerator = operand_1 * target
@@ -87,7 +96,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
             )
             other_solved = solve(numerator, registry[numerator], registry)
             operand_1_solved = solve(operand_1, operand_1_count, registry)
-            return other_solved and operand_1_solved
+            if operand_1_solved is None or other_solved is None:
+              return None
+            return u"({} / {})".format(other_solved, operand_1_solved)
 
   if target > 1:
     # sqrt(square) == target
@@ -98,12 +109,15 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
         digits_count,
         square
       )
-      return solve(square, registry[square], registry)
+      inner = solve(square, registry[square], registry)
+      if inner is None:
+        return None
+      return u'(\u221a{})'.format(inner)
 
   if str(target) == str(digits) * digits_count:
-    return True
+    return "{}".format(target)
 
   unsolved_problems[(target, digits)] = digits_count
   if not suppress_failure:
     print "{} ({}) = ?".format(target, digits_count)
-  return False
+  return None

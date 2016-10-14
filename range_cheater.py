@@ -25,6 +25,8 @@ final_digit_lower_bound = int(digit_lower_bound_string)
 final_digit_upper_bound = int(digit_upper_bound_string)
 
 all_records = t.records.get_all()
+api_records = t.records.get_api_records()
+
 for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   records = all_records[final_digit]
   for final_target in xrange(target_lower_bound, target_upper_bound + 1):
@@ -33,7 +35,12 @@ for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
     else:
       final_digits_count = records[final_target]
       print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
-      t.cheater.solve(final_target, final_digits_count, records)
+      solution = t.cheater.solve(final_target, final_digits_count, records)
+      print solution
+      if solution is not None:
+        if final_target not in api_records[final_digit] or api_records[final_digit][final_target] > final_digits_count:
+          t.records.submit(final_target, final_digit, final_digits_count, solution)
+
     print
 
 sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))

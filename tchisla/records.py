@@ -1,6 +1,8 @@
 import os.path
 import requests
 import json
+import time
+import datetime
 
 DEFAULT_CACHE_LIMIT = 1000000000
 
@@ -52,6 +54,8 @@ def inject_repeated_digits(registry):
       if number not in registry[digits]:
         registry[digits][number] = repeat_count
 
+def get_api_records(cache_limit=DEFAULT_CACHE_LIMIT):
+  return get_all(cache_limit, False)
 
 def get_all(cache_limit=DEFAULT_CACHE_LIMIT, merge_gs_records=True):
   registry = {}
@@ -84,3 +88,32 @@ def get_all(cache_limit=DEFAULT_CACHE_LIMIT, merge_gs_records=True):
 
 def get(digits, cache_limit=DEFAULT_CACHE_LIMIT):
   return get_all(cache_limit)[digits]
+
+def submit(target, digits, digits_count, solution):
+  print u"Submitting {}#{}: {}   {}".format(target, digits, digits_count, solution)
+  data = {
+    "records_timestamp" : str(int(time.time()) * 1000),
+    "app" : "Numbers",
+    "app_version" : "1.17",
+    "app_family" : 0,
+    "results" : [
+      {
+        "solution" : solution,
+        "digits_count" : digits_count,
+        "digits" : digits,
+        "target" : target,
+        "date" : datetime.datetime.utcnow().isoformat() + "+00:00"
+      }
+    ],
+    "os_version" : "9.3.4",
+    "lang" : "zh",
+    "orientation" : 1,
+    "device" : "iPad2,1"
+  } 
+  json_payload = json.dumps(data)
+  submit_url = 'http://www.euclidea.xyz/api/v1/game/numbers/solutions'
+  headers = {"Content-Type": "application/json", "Encoding": "utf-8"}
+  resp = requests.post(submit_url, data = json_payload, headers = headers)
+  resp_content = resp.content
+  print json.loads(resp_content)
+
