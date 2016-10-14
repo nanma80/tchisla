@@ -13,13 +13,25 @@ if len(sys.argv) == 3:
   check_lower_limit = int(check_lower_limit_string)
 
 
-all_records = t.records.get_all(merge_gs_records=False)
+all_records = t.records.get_all()
+api_records = t.records.get_api_records()
+
 for digits in xrange(1, 10):
   print "Processing #{}".format(digits)
 
   for target in xrange(check_lower_limit, check_upper_limit + 1):
-    sub_records = all_records[digits]
+    sub_records = api_records[digits]
+    full_records =all_records[digits]
     if target not in sub_records:
-      print "No record for {}#{}".format(target, digits)
-    else:
-      t.cheater.solve(target, sub_records[target] - 1, sub_records, suppress_failure=True)
+      print "No API record for {}#{}".format(target, digits)
+      t.cheater.solve(target, full_records[target], full_records)
+      print
+    # else:
+    #   t.cheater.solve(target, sub_records[target] - 1, sub_records, suppress_failure=True)
+
+sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))
+
+print "Unsolved:"
+
+for unsolved_problem in sorted_unsolved_problems:
+  print "{}#{} = {}".format(unsolved_problem[0], unsolved_problem[1], t.cheater.unsolved_problems[unsolved_problem])
