@@ -4,22 +4,33 @@ import sys
 import tchisla as t
 
 if len(sys.argv) == 2:
-  filename, check_limit_string = sys.argv
-  check_upper_limit = int(check_limit_string)
-  check_lower_limit = 1
-if len(sys.argv) == 3:
-  filename, check_lower_limit_string, check_limit_string = sys.argv
-  check_upper_limit = int(check_limit_string)
-  check_lower_limit = int(check_lower_limit_string)
+  filename, target_lower_bound_string = sys.argv
+  target_upper_bound_string = target_lower_bound_string
+  digit_lower_bound_string = '1'
+  digit_upper_bound_string = '9'
+elif len(sys.argv) == 3:
+  filename, target_lower_bound_string, target_upper_bound_string = sys.argv
+  digit_lower_bound_string = '1'
+  digit_upper_bound_string = '9'
+elif len(sys.argv) == 4:
+  filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string = sys.argv
+  digit_upper_bound_string = digit_lower_bound_string
+elif len(sys.argv) == 5:
+  filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string, digit_upper_bound_string = sys.argv
+
+target_lower_bound = int(target_lower_bound_string)
+target_upper_bound = int(target_upper_bound_string)
+final_digit_lower_bound = int(digit_lower_bound_string)
+final_digit_upper_bound = int(digit_upper_bound_string)
 
 
 gs_records = t.records.get_gs_records()
 api_records = t.records.get_all(merge_gs_records=False)
 
-for digits in xrange(1, 10):
+for digits in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   print "#{}:".format(digits)
 
-  for target in xrange(check_lower_limit, check_upper_limit + 1):
+  for target in xrange(target_lower_bound, target_upper_bound + 1):
     api_sub_records = api_records[digits]
     gs_sub_records = gs_records[digits]
 
