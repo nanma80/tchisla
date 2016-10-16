@@ -31,23 +31,27 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
     if operand_1_count >= digits_count:
       continue
 
-    # operand_1 ** power == target
+    # operand_1 ** exponent == target
     if operand_1 > 1:
-      power = int(math.log(target, operand_1) + 0.5)
+      for sqrt_count in xrange(0, 3):
+        power = target ** (2 ** sqrt_count)
+        exponent = int(math.log(power, operand_1) + 0.5)
 
-      if operand_1 ** power == target:
-        if power in registry and operand_1_count + registry[power] <= digits_count:
-          print "{} ({}) = {} ^ {}".format(
-            target,
-            digits_count,
-            operand_1,
-            power,
-          )
-          operand_1_solved = solve(operand_1, operand_1_count, registry)
-          other_solved = solve(power, registry[power], registry)
-          if operand_1_solved is None or other_solved is None:
-            return None
-          return u"({} ^ {})".format(operand_1_solved, other_solved)
+        if operand_1 ** exponent == power:
+          if exponent in registry and operand_1_count + registry[exponent] <= digits_count:
+            print "{} ({}) = {}{}{} ^ {}".format(
+              target,
+              digits_count,
+              "sqrt(" * sqrt_count,
+              operand_1,
+              ")" * sqrt_count,
+              exponent,
+            )
+            operand_1_solved = solve(operand_1, operand_1_count, registry)
+            other_solved = solve(exponent, registry[exponent], registry)
+            if operand_1_solved is None or other_solved is None:
+              return None
+            return u"({}{} ^ {})".format(u'\u221a' * sqrt_count, operand_1_solved, other_solved)
 
     # operand_1 + or - plus_2 == target
     plus_2 = abs(target - operand_1)
