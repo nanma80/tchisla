@@ -14,7 +14,12 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
   if problem in known_solutions:
     (known_digits_count, solution) = known_solutions[problem]
     if known_digits_count <= digits_count:
-      return solution
+      print u"{} ({}) = {}".format(
+              target,
+              digits_count,
+              solution
+            )
+      return u"({})".format(solution)
 
   # rev_fac! == target
   if target in reverse_factorial:
