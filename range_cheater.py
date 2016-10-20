@@ -3,6 +3,7 @@
 import sys
 import tchisla as t
 
+skip_string = ''
 
 if len(sys.argv) == 2:
   filename, target_lower_bound_string = sys.argv
@@ -18,11 +19,14 @@ elif len(sys.argv) == 4:
   digit_upper_bound_string = digit_lower_bound_string
 elif len(sys.argv) == 5:
   filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string, digit_upper_bound_string = sys.argv
+elif len(sys.argv) == 6:
+  filename, target_lower_bound_string, target_upper_bound_string, digit_lower_bound_string, digit_upper_bound_string, skip_string = sys.argv
 
 target_lower_bound = int(target_lower_bound_string)
 target_upper_bound = int(target_upper_bound_string)
 final_digit_lower_bound = int(digit_lower_bound_string)
 final_digit_upper_bound = int(digit_upper_bound_string)
+skip = (skip_string == 'skip')
 
 all_records = t.records.get_all()
 api_records = t.records.get_api_records()
@@ -30,6 +34,9 @@ api_records = t.records.get_api_records()
 for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   records = all_records[final_digit]
   for final_target in xrange(target_lower_bound, target_upper_bound + 1):
+    if skip and final_target in api_records[final_digit] and api_records[final_digit][final_target] == all_records[final_digit][final_target]:
+      continue
+
     if final_target not in records:
       print "No record for {}#{}".format(final_target, final_digit)
     else:
