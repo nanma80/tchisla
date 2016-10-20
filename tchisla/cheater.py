@@ -18,7 +18,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
               target,
               digits_count,
               solution
-            )
+            ).encode('utf-8')
       return u"({})".format(solution)
 
   # rev_fac! == target
