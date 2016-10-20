@@ -6,9 +6,15 @@ for n in xrange(3, 20):
   reverse_factorial[math.factorial(n)] = n
 
 unsolved_problems = {}
+known_solutions = get_known_solutions()
 
 def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppress_failure=False, fail_fast=True):
   digits = registry['digits']
+  problem = (target, digits)
+  if problem in known_solutions:
+    (known_digits_count, solution) = known_solutions[problem]
+    if known_digits_count <= digits_count:
+      return solution
 
   # rev_fac! == target
   if target in reverse_factorial:

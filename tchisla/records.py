@@ -9,6 +9,8 @@ DEFAULT_CACHE_LIMIT = 1000000000
 tmp_dir = 'tmp'
 cache_path = tmp_dir + "/records.json"
 
+solution_path = '../tchisla-solver/results/results.txt'
+
 def get_gs_records():
   registry = {}
   for digits in xrange(1, 10):
@@ -117,3 +119,18 @@ def submit(target, digits, digits_count, solution):
   resp_content = resp.content
   print json.loads(resp_content)
 
+def get_known_solutions():
+  print "Loading known solutions"
+  solutions = {}
+  with open(solution_path, 'r') as f:
+    for line in f:
+      content = line.decode('utf-8').strip("\n")
+      target, digits, digits_count, solution = content.split(",")
+      target, digits, digits_count = int(target), int(digits), int(digits_count)
+      problem = (target, digits)
+      if problem in solutions:
+        if solutions[problem][0] > digits_count:
+          solutions[problem] = (digits_count, solution)
+      else:
+        solutions[problem] = (digits_count, solution)
+  return solutions
