@@ -38,6 +38,9 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
         return u"({}!)".format(inner)
 
   for (operand_1, operand_1_count) in registry.iteritems():
+    if operand_1 == target:
+      continue
+      
     if operand_1 == 'digits':
       continue
 
