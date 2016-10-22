@@ -36,6 +36,11 @@ for digits in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
       print "No API record for {}#{}".format(target, digits)
       t.cheater.solve(target, full_records[target], full_records, fail_fast=True)
       print
+    elif sub_records[target] > full_records[target]:
+      print "{}#{}: API: {}; GS: {}".format(target, digits, sub_records[target], full_records[target])
+      t.cheater.solve(target, full_records[target], full_records, fail_fast=True)
+      print
+
 
 sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))
 
