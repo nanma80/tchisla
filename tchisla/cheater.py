@@ -11,15 +11,6 @@ known_solutions = get_known_solutions()
 def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppress_failure=False, fail_fast=True):
   digits = registry['digits']
   problem = (target, digits)
-  if problem in known_solutions:
-    (known_digits_count, solution) = known_solutions[problem]
-    if known_digits_count <= digits_count:
-      print u"{} ({}) = {}".format(
-              target,
-              digits_count,
-              solution
-            ).encode('utf-8')
-      return u"({})".format(solution)
 
   # rev_fac! == target
   if target in reverse_factorial:
@@ -146,6 +137,16 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
 
   if str(target) == str(digits) * digits_count:
     return "{}".format(target)
+
+  if problem in known_solutions:
+    (known_digits_count, solution) = known_solutions[problem]
+    if known_digits_count <= digits_count:
+      print u"{} ({}) = {}".format(
+              target,
+              digits_count,
+              solution
+            ).encode('utf-8')
+      return u"({})".format(solution)
 
   unsolved_problems[(target, digits)] = digits_count
   if not suppress_failure:
