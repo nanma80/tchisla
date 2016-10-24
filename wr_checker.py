@@ -26,6 +26,9 @@ final_digit_upper_bound = int(digit_upper_bound_string)
 all_records = t.records.get_all()
 api_records = t.records.get_api_records()
 
+unsolved_count = 0
+unknown_count = 0
+
 for digits in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   print "Processing #{}".format(digits)
 
@@ -36,13 +39,16 @@ for digits in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
       print "No API record for {}#{}".format(target, digits)
       t.cheater.solve(target, full_records[target], full_records, fail_fast=True)
       print
+      unknown_count += 1
     elif sub_records[target] > full_records[target]:
       print "{}#{}: API: {}; GS: {}".format(target, digits, sub_records[target], full_records[target])
       t.cheater.solve(target, full_records[target], full_records, fail_fast=True)
       print
+      unknown_count += 1
 
 
 sorted_unsolved_problems = sorted(t.cheater.unsolved_problems.keys(), key=lambda x: (x[1], x[0]))
+unsolved_count = len(sorted_unsolved_problems)
 
 aggregated_unsolved_problems = {}
 for unsolved_problem in sorted_unsolved_problems:
@@ -55,9 +61,12 @@ for unsolved_problem in sorted_unsolved_problems:
   else:
     aggregated_unsolved_problems[(digits, count)] = [target]
 
-print "Unsolved:"
+print "{} problems need to be improved. {} need to be solved. The rest can be easily deduced.".format(unknown_count, unsolved_count, unknown_count - unsolved_count)
+print "{} problem to be solved:".format(unsolved_count)
 for (digits, count) in sorted(aggregated_unsolved_problems.keys()):
   targets = aggregated_unsolved_problems[(digits, count)]
   targets_string = [str(target) for target in targets]
 
   print "[{}]#{} -d {}".format(','.join(targets_string), digits, count)
+
+
