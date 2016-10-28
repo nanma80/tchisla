@@ -42,7 +42,7 @@ for final_digit in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
     else:
       final_digits_count = records[final_target]
       print "{}#{} ({})".format(final_target, final_digit, final_digits_count)
-      solution = t.cheater.solve(final_target, final_digits_count, records, fail_fast=False)
+      solution = t.cheater.solve(final_target, final_digits_count, records, fail_fast=True)
       if solution is None:
         print solution
       else:
