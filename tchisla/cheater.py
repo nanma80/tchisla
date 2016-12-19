@@ -111,6 +111,7 @@ def solve(target, digits_count, registry, cache_limit=DEFAULT_CACHE_LIMIT, suppr
           else:
             return u"({} * {})".format(operand_1_solved, other_solved)
 
+  for (operand_1, operand_1_count) in registry.iteritems():
     # numerator / operand_1 == target
     numerator = operand_1 * target
     if numerator <= cache_limit:

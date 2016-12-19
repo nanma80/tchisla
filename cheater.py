@@ -25,7 +25,7 @@ else:
     final_digits_count = records[final_target]
 
   print "{}#{} ({}):".format(final_target, final_digit, final_digits_count)
-  solution = t.cheater.solve(final_target, final_digits_count, records)
+  solution = t.cheater.solve(final_target, final_digits_count, records, fail_fast=True)
   print solution
   # if solution is not None:
   #   t.records.submit(final_target, final_digit, final_digits_count, solution)
