@@ -1,0 +1,9 @@
+./range_cheater.py 1 10000 1 1 > results/range_cheater/1.txt
+./range_cheater.py 1 10000 2 2 > results/range_cheater/2.txt
+./range_cheater.py 1 10000 3 3 > results/range_cheater/3.txt
+./range_cheater.py 1 10000 4 4 > results/range_cheater/4.txt
+./range_cheater.py 1 10000 5 5 > results/range_cheater/5.txt
+./range_cheater.py 1 10000 6 6 > results/range_cheater/6.txt
+./range_cheater.py 1 10000 7 7 > results/range_cheater/7.txt
+./range_cheater.py 1 10000 8 8 > results/range_cheater/8.txt
+./range_cheater.py 1 10000 9 9 > results/range_cheater/9.txt
