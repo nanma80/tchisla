@@ -33,6 +33,7 @@ for digits in xrange(final_digit_lower_bound, final_digit_upper_bound + 1):
   print "Processing #{}".format(digits)
 
   for target in xrange(target_lower_bound, target_upper_bound + 1):
+    print target
     sub_records = api_records[digits]
     full_records =all_records[digits]
     if target not in sub_records:
